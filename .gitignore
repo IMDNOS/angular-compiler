@@ -1,6 +1,6 @@
 
 .idea/
-
+src/gen/
 # Compiled class file
 *.class
 
