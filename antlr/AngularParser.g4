@@ -58,7 +58,7 @@ option
       ;
 
   method
-      : ID LPARENTHESIS methodParams? RPARENTHESIS (COLON (type | VOID) )? LBRACE body RBRACE
+      : ID LPARENTHESIS methodParams? RPARENTHESIS (COLON VOID)? LBRACE body RBRACE
       ;
 
 
