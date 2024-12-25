@@ -7,7 +7,7 @@ public class TypeScript {
     LinkedList<Attribute> attributes = new LinkedList<>();
     LinkedList<Method> methods = new LinkedList<>();
     Method constructor;
-
+//
     public TypeScript(LinkedList<Attribute> attributes, LinkedList<Method> methods, Method constructor) {
         this.attributes = attributes;
         this.methods = methods;
