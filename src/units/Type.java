@@ -1,9 +1,5 @@
 package units;
 
-public enum Type {
-    NUMBER,
-    STRING,
-    BOOLEAN,
-    ANY
+public abstract class Type implements Listable{
 }
 

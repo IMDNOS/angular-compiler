@@ -32,12 +32,13 @@ option
 
 
   expression:
-           LET ID COLON type SEMICOLON
-          |LET ID COLON type EQUAL_SIGN (literal|array) SEMICOLON
-          | (THIS)? ID EQUAL_SIGN (literal|array) SEMICOLON
+           LET ID COLON type SEMICOLON                              #Declare
+          |LET ID COLON type EQUAL_SIGN (literal|array) SEMICOLON   #DeclareAndAssign
+          | (THIS)? ID EQUAL_SIGN (literal|array) SEMICOLON         #Assign
   ;
 
   constructor:LPARENTHESIS /*methodParams?*/ RPARENTHESIS  LBRACE body RBRACE ;
+
 
   type: NUMBER | STRINGDL | BOOLEAN | ANY  ;
 
@@ -50,8 +51,7 @@ option
       | LBRACE (keyValuePair (COMMA keyValuePair)*)? RBRACE
       ;
 
-  array: LBRACKET literal (COMMA literal)* COMMA? RBRACKET;
-
+  array: LBRACKET literal (COMMA literal)* COMMA? RBRACKET   #Any;
 
   keyValuePair
       : ID COLON literal
@@ -75,9 +75,6 @@ option
       ;
 
 // <<<<<    html parser
-
-
-
 
 
 html
