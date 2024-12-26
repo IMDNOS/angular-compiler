@@ -7,34 +7,22 @@ import units.Html;
 import units.Program;
 import units.TypeScript;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AngularVisitor extends AngularParserBaseVisitor {
 
     @Override
     public Object visitProgram(AngularParser.ProgramContext ctx) {
 
-        Html html = null;
-        Css css = null;
-        TypeScript typeScript = null;
-
-        for (AngularParser.OptionContext option : ctx.option()) {
-            if (option instanceof AngularParser.CssOptionContext) {
-                css = (Css) visitCssOption((AngularParser.CssOptionContext) option);
-            } else if (option instanceof AngularParser.HtmlOptionContext) {
-                html = (Html) visitHtmlOption((AngularParser.HtmlOptionContext) option);
-            }
-        }
-
-        typeScript = (TypeScript) visitTs(ctx.ts());
+        Css css = (Css) visitCssOption(ctx.cssOption());
+        Html html = (Html) visitHtmlOption(ctx.htmlOption());
+        TypeScript typeScript = (TypeScript) visitTs(ctx.ts());
 
         return new Program(html, css, typeScript);
     }
 
     @Override
     public Object visitCssOption(AngularParser.CssOptionContext ctx) {
-
         Css css = new Css((String) visitCss(ctx.css()));
         return css;
     }
