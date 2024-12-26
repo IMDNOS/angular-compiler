@@ -31,6 +31,37 @@ public class AngularVisitor extends AngularParserBaseVisitor {
         return ctx.getText();
     }
 
+//     <<<<<<<<<<<<<    HTML
+
+
+    @Override
+    public Object visitHtmlOption(AngularParser.HtmlOptionContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Object visitHtml(AngularParser.HtmlContext ctx) {
+        return super.visitHtml(ctx);
+    }
+
+    @Override
+    public Object visitElement(AngularParser.ElementContext ctx) {
+        return super.visitElement(ctx);
+    }
+
+    @Override
+    public Object visitHtmlAttribute(AngularParser.HtmlAttributeContext ctx) {
+        return super.visitHtmlAttribute(ctx);
+    }
+
+    @Override
+    public Object visitContent(AngularParser.ContentContext ctx) {
+        return super.visitContent(ctx);
+    }
+
+//    >>>>>>>>>>>>>>>>>>>>
+
+
 // <<<<<<<<<<<<<<< TS
 
     @Override
@@ -109,36 +140,6 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     }
 
 //    >>>>>>>>>>>>>>
-
-//     <<<<<<<<<<<<<    HTML
-
-
-    @Override
-    public Object visitHtmlOption(AngularParser.HtmlOptionContext ctx) {
-        return null;
-    }
-
-    @Override
-    public Object visitHtml(AngularParser.HtmlContext ctx) {
-        return super.visitHtml(ctx);
-    }
-
-    @Override
-    public Object visitElement(AngularParser.ElementContext ctx) {
-        return super.visitElement(ctx);
-    }
-
-    @Override
-    public Object visitHtmlAttribute(AngularParser.HtmlAttributeContext ctx) {
-        return super.visitHtmlAttribute(ctx);
-    }
-
-    @Override
-    public Object visitContent(AngularParser.ContentContext ctx) {
-        return super.visitContent(ctx);
-    }
-
-//    >>>>>>>>>>>>>>>>>>>>
 
 
 }
