@@ -9,14 +9,13 @@ options { tokenVocab = AngularLexer; }
 //   <<<<<< Angular parser
 
 
-program: componentDeclaration ;
 
-componentDeclaration
+program
     : AT_COMPONENT LPARENTHESIS LBRACE (SELECTOR COLON STRING COMMA  STANDALONE COLON (TRUE | FALSE) COMMA) option (COMMA option)* COMMA? RBRACE RPARENTHESIS EXPORT CLASS ID LBRACE ts RBRACE
     ;
 
 option
-    :STYLES COLON LBRACKET BACKTICK cssDeclaration* BACKTICK RBRACKET       #CssOption
+    :STYLES COLON LBRACKET BACKTICK css BACKTICK RBRACKET       #CssOption
     |TEMPLATE COLON BACKTICK html BACKTICK                                  #HtmlOption
     ;
 
@@ -105,6 +104,7 @@ content
 // <<<<<<<<<<<<< css parser
 
 
+css:cssDeclaration*;
 
 cssDeclaration: CSS_SELECTOR (ID)? LBRACE (cssProperty (SEMICOLON cssProperty)*)? SEMICOLON?  RBRACE;
 

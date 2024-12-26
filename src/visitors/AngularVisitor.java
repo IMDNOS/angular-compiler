@@ -2,26 +2,47 @@ package visitors;
 
 import gen.AngularParser;
 import gen.AngularParserBaseVisitor;
+import units.Css;
+import units.Html;
+import units.Program;
+import units.TypeScript;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AngularVisitor extends AngularParserBaseVisitor {
-    @Override
-    public Object visitProgram(AngularParser.ProgramContext ctx) {
-        return super.visitProgram(ctx);
-    }
 
     @Override
-    public Object visitComponentDeclaration(AngularParser.ComponentDeclarationContext ctx) {
-        return super.visitComponentDeclaration(ctx);
+    public Object visitProgram(AngularParser.ProgramContext ctx) {
+
+        Html html = null;
+        Css css = null;
+        TypeScript typeScript = null;
+
+        for (AngularParser.OptionContext option : ctx.option()) {
+            if (option instanceof AngularParser.CssOptionContext) {
+                css = (Css) visitCssOption((AngularParser.CssOptionContext) option);
+            } else if (option instanceof AngularParser.HtmlOptionContext) {
+                html = (Html) visitHtmlOption((AngularParser.HtmlOptionContext) option);
+            }
+        }
+
+        typeScript = (TypeScript) visitTs(ctx.ts());
+
+        return new Program(html, css, typeScript);
     }
 
     @Override
     public Object visitCssOption(AngularParser.CssOptionContext ctx) {
-        return super.visitCssOption(ctx);
+
+        Css css = new Css((String) visitCss(ctx.css()));
+        return css;
     }
 
     @Override
     public Object visitHtmlOption(AngularParser.HtmlOptionContext ctx) {
-        return super.visitHtmlOption(ctx);
+        Html html = new Html();
+        return html;
     }
 
     @Override
@@ -120,8 +141,15 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     }
 
     @Override
+    public Object visitCss(AngularParser.CssContext ctx) {
+        return ctx.getText();
+    }
+
+    @Override
     public Object visitCssDeclaration(AngularParser.CssDeclarationContext ctx) {
-        return super.visitCssDeclaration(ctx);
+
+        return ctx.getText();
+
     }
 
     @Override

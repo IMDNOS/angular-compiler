@@ -8,6 +8,8 @@ public class Program {
     Css css;
     TypeScript typeScript;
 
+//    public Program() {}
+
     public Program(Html html, Css css, TypeScript typeScript) {
         this.html = html;
         this.css = css;
