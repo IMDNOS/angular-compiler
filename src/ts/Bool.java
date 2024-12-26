@@ -1,4 +1,4 @@
-package units;
+package ts;
 
 public class Bool extends Type {
     private boolean value;

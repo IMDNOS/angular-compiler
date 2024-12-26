@@ -1,4 +1,4 @@
-package units;
+package ts;
 
 public class Number extends Type{
     int number;

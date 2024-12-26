@@ -2,12 +2,10 @@ package visitors;
 
 import gen.AngularParser;
 import gen.AngularParserBaseVisitor;
-import units.Css;
-import units.Html;
-import units.Program;
-import units.TypeScript;
-
-import java.util.*;
+import css.Css;
+import html.Html;
+import program.Program;
+import ts.TypeScript;
 
 public class AngularVisitor extends AngularParserBaseVisitor {
 
@@ -27,11 +25,13 @@ public class AngularVisitor extends AngularParserBaseVisitor {
         return css;
     }
 
+
     @Override
-    public Object visitHtmlOption(AngularParser.HtmlOptionContext ctx) {
-        Html html = new Html();
-        return html;
+    public Object visitCss(AngularParser.CssContext ctx) {
+        return ctx.getText();
     }
+
+// <<<<<<<<<<<<<<< TS
 
     @Override
     public Object visitTs(AngularParser.TsContext ctx) {
@@ -108,6 +108,16 @@ public class AngularVisitor extends AngularParserBaseVisitor {
         return super.visitBody(ctx);
     }
 
+//    >>>>>>>>>>>>>>
+
+//     <<<<<<<<<<<<<    HTML
+
+
+    @Override
+    public Object visitHtmlOption(AngularParser.HtmlOptionContext ctx) {
+        return null;
+    }
+
     @Override
     public Object visitHtml(AngularParser.HtmlContext ctx) {
         return super.visitHtml(ctx);
@@ -128,30 +138,7 @@ public class AngularVisitor extends AngularParserBaseVisitor {
         return super.visitContent(ctx);
     }
 
-    @Override
-    public Object visitCss(AngularParser.CssContext ctx) {
-        return ctx.getText();
-    }
+//    >>>>>>>>>>>>>>>>>>>>
 
-    @Override
-    public Object visitCssDeclaration(AngularParser.CssDeclarationContext ctx) {
 
-        return ctx.getText();
-
-    }
-
-    @Override
-    public Object visitCssProperty(AngularParser.CssPropertyContext ctx) {
-        return super.visitCssProperty(ctx);
-    }
-
-    @Override
-    public Object visitProperty(AngularParser.PropertyContext ctx) {
-        return super.visitProperty(ctx);
-    }
-
-    @Override
-    public Object visitPropertyValue(AngularParser.PropertyValueContext ctx) {
-        return super.visitPropertyValue(ctx);
-    }
 }

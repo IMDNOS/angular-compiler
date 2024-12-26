@@ -3,7 +3,7 @@ import gen.AngularParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import units.Program;
+import program.Program;
 import visitors.AngularVisitor;
 
 import java.io.IOException;

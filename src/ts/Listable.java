@@ -1,3 +1,3 @@
-package units;
+package ts;
 
 public interface Listable { }

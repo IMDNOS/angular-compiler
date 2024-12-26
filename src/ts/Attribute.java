@@ -1,10 +1,10 @@
-package units;
+package ts;
 
-public class Variable implements ID{
+public class Attribute implements ID{
     private String name;
     private Type type;
 
-    public Variable(String name, Type type) {
+    public Attribute(String name, Type type) {
         this.name = name;
         this.type = type;
     }
@@ -12,6 +12,7 @@ public class Variable implements ID{
     public String getName() {
         return name;
     }
+
 
     public void setName(String name) {
         this.name = name;
@@ -27,7 +28,7 @@ public class Variable implements ID{
 
     @Override
     public String toString() {
-        return "Variable{" +
+        return "Attribute{" +
                 "name='" + name + '\'' +
                 ", type=" + type +
                 '}';
