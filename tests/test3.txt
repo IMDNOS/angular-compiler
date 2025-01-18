@@ -1,0 +1,33 @@
+@Component({
+
+  selector: "app-root",
+  standalone: true,
+
+
+  styles: [
+    ``
+  ],
+  template: ``,
+})
+export class AppComponent {
+
+  products:any;
+  selectedProduct:any;
+
+
+  constructor() {
+
+ let imad:string = "Imad";
+
+
+
+    this.products = "hi";
+
+  }
+
+  showDetails(product: any) {
+    this.selectedProduct = product;
+
+  }
+
+}

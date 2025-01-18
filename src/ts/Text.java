@@ -11,6 +11,14 @@ public class Text extends Type{
     }
 
 
+    public String getText() {
+        return Text;
+    }
+
+    public void setText(String text) {
+        Text = text;
+    }
+
     public String toString() {
         return Text;
     }

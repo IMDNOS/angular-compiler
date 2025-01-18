@@ -10,9 +10,11 @@ public class Program {
 
     Html html;
     Css css;
-    TypeScript typeScript;
+  public TypeScript typeScript = new TypeScript() ;
 
-//    public Program() {}
+    public Program() {
+        typeScript = new TypeScript();
+    }
 
     public Program(Html html, Css css, TypeScript typeScript) {
         this.html = html;
@@ -47,9 +49,9 @@ public class Program {
     @Override
     public String toString() {
         return "Program{" +
-                "html=" + html +
-                ", css=" + css +
-                ", typeScript=" + typeScript +
-                '}';
+                "\n html=" + html +
+                ",\n css=" + css +
+                ",\n typeScript=" + typeScript +
+                "\n}";
     }
 }

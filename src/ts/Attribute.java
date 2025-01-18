@@ -2,9 +2,10 @@ package ts;
 
 public class Attribute implements ID{
     private String name;
-    private Type type;
+    private Listable type;
 
-    public Attribute(String name, Type type) {
+
+    public Attribute(String name, Listable type) {
         this.name = name;
         this.type = type;
     }
@@ -18,19 +19,19 @@ public class Attribute implements ID{
         this.name = name;
     }
 
-    public Type getType() {
+    public Listable getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(Listable type) {
         this.type = type;
     }
 
     @Override
     public String toString() {
-        return "Attribute{" +
-                "name='" + name + '\'' +
-                ", type=" + type +
-                '}';
+        return "\n {" +
+                "\n name='" + name + '\'' +
+                ",\n  type=" + type +
+                "\n}";
     }
 }

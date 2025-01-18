@@ -24,22 +24,27 @@ htmlOption: TEMPLATE COLON BACKTICK html BACKTICK;
 
   // <<<<<<< ts parser
 
-  ts: globals* constructor? globals* ;
+//  ts: globals* constructor? globals* ;
 
-  globals
-            :attribute
-            | method;
+//  globals
+//            :attribute
+//            | method;
+
+
+  ts: (attribute | method)* constructor? (attribute | method)* ;
+
 
   attribute : ID COLON type SEMICOLON;
 
 
   expression:
-           LET ID COLON type SEMICOLON                              #Declare
+           LET ID COLON type SEMICOLON                              #DeclareVariable
           |LET ID COLON type EQUAL_SIGN (literal|array) SEMICOLON   #DeclareAndAssign
-          | (THIS)? ID EQUAL_SIGN (literal|array) SEMICOLON         #Assign
+          |ID EQUAL_SIGN (literal|array) SEMICOLON                  #AssignVariable
+          | (THIS)? ID EQUAL_SIGN (literal|array) SEMICOLON         #AssignAttribute
   ;
 
-  constructor:LPARENTHESIS /*methodParams?*/ RPARENTHESIS  LBRACE body RBRACE ;
+  constructor:CONSTRUCTOR LPARENTHESIS RPARENTHESIS  LBRACE expression* RBRACE ;
 
 
   type: NUMBER | STRINGDL | BOOLEAN | ANY  ;
@@ -50,14 +55,14 @@ htmlOption: TEMPLATE COLON BACKTICK html BACKTICK;
       | NUMERIC_VALUE
       | TRUE
       | FALSE
-      | LBRACE (keyValuePair (COMMA keyValuePair)*)? RBRACE
+      | LBRACE (ID COLON STRING (COMMA ID COLON STRING)*)? RBRACE
       ;
 
-  array: LBRACKET literal (COMMA literal)* COMMA? RBRACKET   #Any;
+  array: LBRACKET literal (COMMA literal)* COMMA? RBRACKET;
 
-  keyValuePair
-      : ID COLON literal
-      ;
+//  keyValuePair
+//      : ID COLON literal
+//      ;
 
   method
       : ID LPARENTHESIS methodParams? RPARENTHESIS (COLON VOID)? LBRACE body RBRACE

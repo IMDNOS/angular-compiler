@@ -76,6 +76,7 @@ THIS:'this.';
 
 LET:'let';
 
+CONSTRUCTOR:'constructor';
 
 
 

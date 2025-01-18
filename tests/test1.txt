@@ -67,9 +67,18 @@ export class AppComponent {
 
 
   constructor() {
+     let imad:string = "Imad";
+
+
+
+        this.selectedProduct = "hi";
+
+
+
+
     this.products = [
       {
-        name: 'Product 1',
+        name: "Product 1",
         image: 'https://images.pexels.com/photos/4012470/pexels-photo-4012470.jpeg',
         description: 'This is the description for product 1.'
       },
