@@ -5,11 +5,10 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class Constructor {
-    Map<String,Type> variables;
+    Map<String,Listable> variables;
 
 
-
-    public Constructor(Map<String,Type> variables) {
+    public Constructor(Map<String,Listable> variables) {
         this.variables = variables;
     }
 
@@ -17,13 +16,14 @@ public class Constructor {
         this.variables = new HashMap<>();
     }
 
-    public Map<String, Type> getVariables() {
+    public Map<String,Listable> getVariables() {
         return variables;
     }
 
-    public void setVariables(Map<String, Type> variables) {
+    public void setVariables(Map<String,Listable> variables) {
         this.variables = variables;
     }
+
     public void addVariable(String name, Type type) {
         this.variables.put(name, type);
     }

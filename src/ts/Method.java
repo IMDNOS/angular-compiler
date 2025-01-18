@@ -1,30 +1,11 @@
 package ts;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Method {
-    LinkedList<ID> expressions;
 
-    public Method(LinkedList<ID> expressions) {
-        this.expressions = expressions;
-    }
+//Map<String,Listable>
 
-    public void addExpression(ID expression) {
-        expressions.add(expression);
-    }
 
-    public LinkedList<ID> getExpressions() {
-        return expressions;
-    }
-
-    public void setExpressions(LinkedList<ID> expressions) {
-        this.expressions = expressions;
-    }
-
-    @Override
-    public String toString() {
-        return "Method{" +
-                "expressions=" + expressions +
-                '}';
-    }
 }
