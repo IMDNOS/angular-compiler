@@ -84,30 +84,32 @@ htmlOption: TEMPLATE COLON BACKTICK html BACKTICK;
 // <<<<<    html parser
 
 
-html
-    : element*
-    ;
+html: div;
 
+div:
+    TAG_OPEN ID (classid | ng | event)* TAG_CLOSE
+    (img | div | br | paragragh)*
+    TAG_OPEN_SELF ID TAG_CLOSE;
 
-element
-    : TAG_OPEN content+ htmlAttribute* TAG_CLOSE ( content+ ( TAG_OPEN_SELF content+ TAG_CLOSE )* )*
-    ;
+paragragh:
+    h2Element
+    | pElement;
 
+h2Element:
+    TAG_OPEN H2 TAG_CLOSE ANGULAR_BINDING TAG_OPEN_SELF H2 TAG_CLOSE;
 
-htmlAttribute
-    : ATTRIBUTE
-    | ANGULAR_ATTRIBUTE_DIRECTIVE
-    | ANGULAR_ATTRIBUTE_PROPERTY
-    | ANGULAR_ATTRIBUTE_EVENT
-    ;
+pElement:
+    TAG_OPEN P TAG_CLOSE ANGULAR_BINDING TAG_OPEN_SELF P TAG_CLOSE;
 
+img: TAG_OPEN ID ANGULAR_ATTRIBUTE_PROPERTY TAG_CLOSE;
 
-content
-    : element
-    | ANGULAR_BINDING
-    | STRING
-    | ID
-    ;
+br: TAG_OPEN ID TAG_CLOSE ANGULAR_BINDING;
+
+classid: ATTRIBUTE;
+
+ng: ANGULAR_ATTRIBUTE_DIRECTIVE;
+
+event: ANGULAR_ATTRIBUTE_EVENT;
 
 // <<<<<<<<<<<<< css parser
 

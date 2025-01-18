@@ -3,15 +3,12 @@ package visitors;
 import gen.AngularParser;
 import gen.AngularParserBaseVisitor;
 import css.Css;
-import html.Html;
+import html.*;
 import program.Program;
 import ts.*;
 import ts.Number;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AngularVisitor extends AngularParserBaseVisitor {
 
@@ -50,30 +47,128 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 //     <<<<<<<<<<<<<    HTML
 
 
+
     @Override
-    public Object visitHtmlOption(AngularParser.HtmlOptionContext ctx) {
+    public Html visitHtmlOption(AngularParser.HtmlOptionContext ctx) {
+        return (Html) visit(ctx.html());
+    }
+
+    @Override
+    public Html visitHtml(AngularParser.HtmlContext ctx) {
+        List<DivNode> divs = new ArrayList<>();
+        if (ctx.div() != null) {
+            divs.add((DivNode) visit(ctx.div()));
+        }
+        return new HtmlNode(divs);
+    }
+
+    @Override
+    public Html visitDiv(AngularParser.DivContext ctx) {
+        String id = null;
+        String classValue = null;
+        List<Html> children = new ArrayList<>();
+
+        for (var attributeContext : ctx.classid()) {
+            String[] parts = attributeContext.getText().split("=");
+            if (parts.length == 2) {
+                String attributeName = parts[0].trim();
+                String attributeValue = parts[1].replace("\"", "").trim();
+
+                if ("id".equals(attributeName)) {
+                    id = attributeValue;
+                } else if ("class".equals(attributeName)) {
+                    classValue = attributeValue;
+                }
+            }
+        }
+
+        String directive = null;
+        if (ctx.ng() != null && !ctx.ng().isEmpty()) {
+            directive = ctx.ng().get(0).getText();
+
+            for (var ngContext : ctx.ng()) {
+                directive = ngContext.getText();
+                break;
+            }
+        }
+
+        String event = null;
+        if (ctx.event() != null && !ctx.event().isEmpty()) {
+            event = ctx.event().get(0).getText();
+
+            for (var eventContext : ctx.event()) {
+                event = eventContext.getText();
+                break;
+            }
+        }
+
+        if (ctx.img() != null) {
+            for (var imgContext : ctx.img()) {
+                children.add((Html) visit(imgContext));
+            }
+        }
+        if (ctx.div() != null) {
+            for (var divContext : ctx.div()) {
+                children.add((Html) visit(divContext));
+            }
+        }
+        if (ctx.br() != null) {
+            for (var brContext : ctx.br()) {
+                children.add((Html) visit(brContext));
+            }
+        }
+        if (ctx.paragragh() != null) {
+            for (var paragraphContext : ctx.paragragh()) {
+                Html child = visitParagragh(paragraphContext);
+                if (child != null) {
+                    children.add(child);
+                }
+            }
+        }
+
+        return new DivNode(id, classValue, directive, event, children);
+    }
+
+    @Override
+    public Html visitImg(AngularParser.ImgContext ctx) {
+        String property = ctx.ANGULAR_ATTRIBUTE_PROPERTY() != null ? ctx.ANGULAR_ATTRIBUTE_PROPERTY().getText() : "";
+        return new ImgNode(property);
+    }
+
+    @Override
+    public Html visitBr(AngularParser.BrContext ctx) {
+        String binding = ctx.ANGULAR_BINDING() != null ? ctx.ANGULAR_BINDING().getText() : "";
+        return new BrNode(binding);
+    }
+    @Override
+    public Html visitParagragh(AngularParser.ParagraghContext ctx) {
+        if (ctx.h2Element() != null) {
+            String h2Text = ctx.h2Element().ANGULAR_BINDING().getText();
+            return new H2Node(h2Text);
+        } else if (ctx.pElement() != null) {
+            String pText = ctx.pElement().ANGULAR_BINDING().getText();
+            return new ParagraphNode(pText);
+        }
         return null;
     }
 
+
     @Override
-    public Object visitHtml(AngularParser.HtmlContext ctx) {
-        return super.visitHtml(ctx);
+    public Html visitClassid(AngularParser.ClassidContext ctx) {
+        return new ClassidNode(ctx.ATTRIBUTE().getText());
     }
 
     @Override
-    public Object visitElement(AngularParser.ElementContext ctx) {
-        return super.visitElement(ctx);
+    public Html visitNg(AngularParser.NgContext ctx) {
+        return new NgNode(ctx.ANGULAR_ATTRIBUTE_DIRECTIVE().getText());
     }
 
     @Override
-    public Object visitHtmlAttribute(AngularParser.HtmlAttributeContext ctx) {
-        return super.visitHtmlAttribute(ctx);
+    public Html visitEvent(AngularParser.EventContext ctx) {
+        return new EventNode(ctx.ANGULAR_ATTRIBUTE_EVENT().getText());
     }
 
-    @Override
-    public Object visitContent(AngularParser.ContentContext ctx) {
-        return super.visitContent(ctx);
-    }
+
 
 //    >>>>>>>>>>>>>>>>>>>>
 

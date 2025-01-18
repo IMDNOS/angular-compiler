@@ -1,4 +1,4 @@
 package html;
 
-public class Html {
+public abstract class Html {
 }
