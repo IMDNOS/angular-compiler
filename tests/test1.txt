@@ -113,7 +113,7 @@ export class AppComponent {
     this.selectedProduct = product;
      imad = "aA";
 
-     this.products=g;
+//     this.products=g;
 
 
   }
