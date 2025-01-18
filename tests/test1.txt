@@ -67,13 +67,15 @@ export class AppComponent {
 
 
   constructor() {
-     let imad:string = 1;
+     let imad:string = "1";
 
+    let g:string=5;
+    let abd:string=5;
 
 
         this.selectedProduct = "hi";
 
-    let abd:string=imad;
+  //  let abd:string=imad;
 
 
     this.products = [
@@ -93,6 +95,7 @@ export class AppComponent {
         description: 'This is the description for product 3.'
       }
     ];
+//   this.products = g;
 
   }
 

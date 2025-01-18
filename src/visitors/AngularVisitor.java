@@ -143,7 +143,7 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
     }
 
-    Map<String, Type> currentScope;
+    Map<String, Listable> currentScope;
 
     @Override
     public Object visitConstructor(AngularParser.ConstructorContext ctx) {
@@ -216,7 +216,7 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     public Object visitLiteral(AngularParser.LiteralContext ctx) {
 
         if (ctx.LBRACE() == null && ctx.ID().size() == 1) {
-            Type t = currentScope.get(ctx.ID(0).toString());
+            Listable t = currentScope.get(ctx.ID(0).toString());
             if (t == null) {
                 System.out.println("no such variable found: " + ctx.ID(0).toString());
                 System.exit(0);

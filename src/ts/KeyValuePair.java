@@ -3,7 +3,7 @@ package ts;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KeyValuePair implements Listable{
+public class KeyValuePair extends Type implements Listable{
 
     Map<String , String> keyValue;
 
