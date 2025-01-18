@@ -340,8 +340,6 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     @Override
     public Object visitArray(AngularParser.ArrayContext ctx) {
 
-//        System.out.println(visitLiteral(ctx.literal(1)));
-
         Array array = new Array();
         for (int i = 0; i < ctx.literal().size(); i++) {
             array.addToArray((Listable) visitLiteral(ctx.literal(i)));
@@ -374,14 +372,12 @@ public class AngularVisitor extends AngularParserBaseVisitor {
             } else if (expressionContext instanceof AngularParser.DeclareAndAssignContext) {
                 Variable variable = (Variable) visitDeclareAndAssign((AngularParser.DeclareAndAssignContext) expressionContext);
                 method.addVariable(variable.getName(), variable.getType());
-//                System.out.println(variable);
             } else if (expressionContext instanceof AngularParser.AssignVariableContext) {
                 Variable variable = (Variable) visitAssignVariable((AngularParser.AssignVariableContext) expressionContext);
                 method.addVariable(variable.getName(), variable.getType());
             } else if (expressionContext instanceof AngularParser.AssignAttributeContext) {
 
                 if (((AngularParser.AssignAttributeContext) expressionContext).literal() != null) {
-                    System.out.println(program.typeScript.methods.get(0));
                     Attribute attribute = (Attribute) visitAssignAttribute((AngularParser.AssignAttributeContext) expressionContext);
                     program.typeScript.addAttribute(attribute.getName(), attribute.getType());
                 } else if (((AngularParser.AssignAttributeContext) expressionContext).array() != null) {
@@ -430,7 +426,6 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
         if (ctx.array() != null) {
             Array array = (Array) visitArray(ctx.array());
-//            System.out.println(array.toString());
             return array;
         } else {
             Type type = (Type) visitLiteral(ctx.literal());
