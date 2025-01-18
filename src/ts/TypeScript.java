@@ -6,9 +6,9 @@ import java.util.Map;
 
 public class TypeScript {
 
-    Map<String, Listable> attributes;
-    LinkedList<Method> methods = new LinkedList<>();
-    Constructor constructor;
+  public   Map<String, Listable> attributes;
+  public   LinkedList<Method> methods = new LinkedList<>();
+  public   Constructor constructor;
 
     public TypeScript(Map<String, Listable> attributes, LinkedList<Method> methods, Constructor constructor) {
         this.attributes = attributes;
@@ -54,9 +54,9 @@ public class TypeScript {
     public String toString() {
 
         return "{" +
-                "\n attributes=" + attributes +
-                ",\n methods=" + methods +
-                ",\n constructor=" + constructor +
+                "\n attributes:" + attributes +
+                ",\n methods:" + methods +
+                ",\n constructor:" + constructor +
                 "\n}";
 
     }

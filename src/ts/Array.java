@@ -30,6 +30,6 @@ public class Array implements Listable {
     public String toString() {
         return ":array={" +
                   array +
-                '}';
+                "}\n";
     }
 }

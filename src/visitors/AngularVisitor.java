@@ -24,8 +24,8 @@ public class AngularVisitor extends AngularParserBaseVisitor {
         program = new Program();
 
         Css css = (Css) visitCssOption(ctx.cssOption());
-        Html html = (Html) visitHtmlOption(ctx.htmlOption());
         TypeScript typeScript = (TypeScript) visitTs(ctx.ts());
+        Html html = (Html) visitHtmlOption(ctx.htmlOption());
 
         program.setCss(css);
         program.setHtml(html);
@@ -94,7 +94,7 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
         Constructor constructor = (Constructor) visitConstructor(ctx.constructor());
 
-        typeScript.setConstructor(constructor);
+//        typeScript.setConstructor(constructor);
 
         return typeScript;
     }
@@ -115,7 +115,9 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
         String name = ctx.ID().toString();
 
+
         Type type = (Type) visitType(ctx.type());
+
 
         return new Variable(name, type);
     }
@@ -136,15 +138,19 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
         }
 
+
         return new Variable(ctx.ID().toString(), type);
 
     }
 
+    Map<String, Type> currentScope;
 
     @Override
     public Object visitConstructor(AngularParser.ConstructorContext ctx) {
 
-        Constructor constructor = new Constructor();
+        Constructor constructor = program.typeScript.constructor;
+
+        currentScope = constructor.getVariables();
 
         for (var expressionContext : ctx.expression()) {
 
@@ -152,11 +158,13 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 //                 Handle DeclareVariable
                 Variable variable = (Variable) visitDeclareVariable((AngularParser.DeclareVariableContext) expressionContext);
 
+
                 constructor.addVariable(variable.getName(), variable.getType());
 
             } else if (expressionContext instanceof AngularParser.DeclareAndAssignContext) {
                 // Handle DeclareAndAssign
                 Variable variable = (Variable) visitDeclareAndAssign((AngularParser.DeclareAndAssignContext) expressionContext);
+
 
                 constructor.addVariable(variable.getName(), variable.getType());
             } else if (expressionContext instanceof AngularParser.AssignVariableContext) {
@@ -171,11 +179,10 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
                 if (((AngularParser.AssignAttributeContext) expressionContext).literal() != null) {
                     Attribute attribute = (Attribute) visitAssignAttribute((AngularParser.AssignAttributeContext) expressionContext);
-                program.typeScript.addAttribute(attribute.getName(), attribute.getType());
-                }
-                else if (((AngularParser.AssignAttributeContext) expressionContext).array() != null) {
-                    Array attribute= (Array) visitAssignAttribute((AngularParser.AssignAttributeContext) expressionContext);
-                program.typeScript.addAttribute(((AngularParser.AssignAttributeContext) expressionContext).ID().getText(), attribute);
+                    program.typeScript.addAttribute(attribute.getName(), attribute.getType());
+                } else if (((AngularParser.AssignAttributeContext) expressionContext).array() != null) {
+                    Array attribute = (Array) visitAssignAttribute((AngularParser.AssignAttributeContext) expressionContext);
+                    program.typeScript.addAttribute(((AngularParser.AssignAttributeContext) expressionContext).ID().getText(), attribute);
                 }
 
 
@@ -208,11 +215,24 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     @Override
     public Object visitLiteral(AngularParser.LiteralContext ctx) {
 
-        if (ctx.LBRACE() == null && ctx.ID() != null) {
-
+        if (ctx.LBRACE() == null && ctx.ID().size() == 1) {
+            Type t = currentScope.get(ctx.ID(0).toString());
+            if (t == null) {
+                System.out.println("no such variable found: " + ctx.ID(0).toString());
+                System.exit(0);
+            }
+            return t;
         }
-        if (ctx.STRING() != null) {
-            return new Text(ctx.STRING().toString());
+        if (ctx.LBRACE() != null) {
+            KeyValuePair keyValuePair = new KeyValuePair();
+
+            for (int i = 0; i < ctx.STRING().size(); i++) {
+                keyValuePair.addToKeyValue(ctx.ID(i).toString(), ctx.STRING(i).toString());
+            }
+            return keyValuePair;
+        }
+        if (ctx.STRING(0) != null) {
+            return new Text(ctx.STRING(0).toString());
         }
         if (ctx.NUMERIC_VALUE() != null) {
             return new Number(Integer.parseInt(ctx.NUMERIC_VALUE().toString()));
@@ -224,20 +244,14 @@ public class AngularVisitor extends AngularParserBaseVisitor {
             return new Bool(false);
         }
 
-        if (ctx.LBRACE() != null) {
-            KeyValuePair keyValuePair = new KeyValuePair();
-
-            for (int i = 0; i < ctx.STRING().size(); i++) {
-                keyValuePair.addToKeyValue(ctx.ID(i).toString(), ctx.STRING(i).toString());
-            }
-            return keyValuePair;
-        }
-
         return null;
     }
 
     @Override
     public Object visitArray(AngularParser.ArrayContext ctx) {
+
+//        System.out.println(visitLiteral(ctx.literal(1)));
+
         Array array = new Array();
         for (int i = 0; i < ctx.literal().size(); i++) {
             array.addToArray((Listable) visitLiteral(ctx.literal(i)));
@@ -279,7 +293,9 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     public Object visitAssignAttribute(AngularParser.AssignAttributeContext ctx) {
 
         if (ctx.array() != null) {
-            return (Array) visitArray(ctx.array());
+            Array array= (Array) visitArray(ctx.array());
+//            System.out.println(array.toString());
+            return array;
         } else {
             Type type = (Type) visitLiteral(ctx.literal());
             return new Attribute(ctx.ID().toString(), type);

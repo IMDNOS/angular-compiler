@@ -12,6 +12,6 @@ public class Number extends Type{
     }
 
     public String toString() {
-        return Integer.toString(number);
+        return Integer.toString(number)+"\n";
     }
 }

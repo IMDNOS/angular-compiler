@@ -30,7 +30,7 @@ public class KeyValuePair implements Listable{
     public String toString() {
         return "{" +
                   keyValue+
-                '}';
+                "}\n";
     }
 
 }

@@ -30,8 +30,8 @@ public class Constructor {
 
     @Override
     public String toString() {
-        return "Constructor{" +
-                "expressions=" + variables +
+        return "\n" +
+                "variables:\n" + variables +
                 '}';
     }
 }

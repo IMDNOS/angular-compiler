@@ -67,13 +67,13 @@ export class AppComponent {
 
 
   constructor() {
-     let imad:string = "Imad";
+     let imad:string = 1;
 
 
 
         this.selectedProduct = "hi";
 
-
+    let abd:string=imad;
 
 
     this.products = [
