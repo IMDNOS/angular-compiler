@@ -7,7 +7,10 @@
   styles: [
     ``
   ],
-  template: ``,
+  template: `
+  <div class="test">
+          <h2>{{ Hello HHH}}</h2>
+        </div>`,
 })
 export class AppComponent {
 
