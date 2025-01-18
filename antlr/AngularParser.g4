@@ -65,21 +65,21 @@ htmlOption: TEMPLATE COLON BACKTICK html BACKTICK;
 //      ;
 
   method
-      : ID LPARENTHESIS methodParams? RPARENTHESIS (COLON VOID)? LBRACE body RBRACE
+      : ID LPARENTHESIS methodParams? RPARENTHESIS (COLON VOID)? LBRACE expression* RBRACE
       ;
 
 
   methodParams
-      : param (COMMA param)*
+      : ID COLON type (COMMA ID COLON type)*
       ;
 
-  param
-      : ID COLON type
-      ;
+//  param
+//      : ID COLON type
+//      ;
 
-  body
-      : expression*
-      ;
+//  body
+//      : expression*
+//      ;
 
 // <<<<<    html parser
 

@@ -67,15 +67,17 @@ export class AppComponent {
 
 
   constructor() {
-     let imad:string = "1";
 
-    let g:string=5;
-    let abd:string=5;
+
+
+     let imad:string = "Imad";
+     let  g:string = "Sss";
+     let abd:number = 5;
 
 
         this.selectedProduct = "hi";
 
-  //  let abd:string=imad;
+//   abd=imad;
 
 
     this.products = [
@@ -99,8 +101,20 @@ export class AppComponent {
 
   }
 
-  showDetails(product: any) {
+  showDetails(product: string) {
+
+
+     let imad:string = "Imad";
+     let  g:string = "Sss";
+     let abd:number = 5;
+
+        product = "pro";
+
     this.selectedProduct = product;
+     imad = "aA";
+
+     this.products=g;
+
 
   }
 

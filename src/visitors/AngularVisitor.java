@@ -26,7 +26,7 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
         program.setCss(css);
         program.setHtml(html);
-        program.setTypeScript(typeScript);
+//        program.setTypeScript(typeScript);
 
         return program;
 
@@ -45,7 +45,6 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     }
 
 //     <<<<<<<<<<<<<    HTML
-
 
 
     @Override
@@ -140,6 +139,7 @@ public class AngularVisitor extends AngularParserBaseVisitor {
         String binding = ctx.ANGULAR_BINDING() != null ? ctx.ANGULAR_BINDING().getText() : "";
         return new BrNode(binding);
     }
+
     @Override
     public Html visitParagragh(AngularParser.ParagraghContext ctx) {
         if (ctx.h2Element() != null) {
@@ -169,7 +169,6 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     }
 
 
-
 //    >>>>>>>>>>>>>>>>>>>>
 
 
@@ -187,7 +186,15 @@ public class AngularVisitor extends AngularParserBaseVisitor {
             typeScript.addAttribute(attribute.getName(), attribute.getType());
         }
 
-        Constructor constructor = (Constructor) visitConstructor(ctx.constructor());
+        /* Constructor constructor = (Constructor) */
+        visitConstructor(ctx.constructor());
+
+
+        for (AngularParser.MethodContext methodContext : ctx.method()) {
+            Method method = (Method) visitMethod(methodContext);
+//            typeScript.methods.add(method);
+        }
+
 
 //        typeScript.setConstructor(constructor);
 
@@ -250,27 +257,15 @@ public class AngularVisitor extends AngularParserBaseVisitor {
         for (var expressionContext : ctx.expression()) {
 
             if (expressionContext instanceof AngularParser.DeclareVariableContext) {
-//                 Handle DeclareVariable
                 Variable variable = (Variable) visitDeclareVariable((AngularParser.DeclareVariableContext) expressionContext);
-
-
                 constructor.addVariable(variable.getName(), variable.getType());
-
             } else if (expressionContext instanceof AngularParser.DeclareAndAssignContext) {
-                // Handle DeclareAndAssign
                 Variable variable = (Variable) visitDeclareAndAssign((AngularParser.DeclareAndAssignContext) expressionContext);
-
-
                 constructor.addVariable(variable.getName(), variable.getType());
             } else if (expressionContext instanceof AngularParser.AssignVariableContext) {
-                // Handle AssignVariable
                 Variable variable = (Variable) visitAssignVariable((AngularParser.AssignVariableContext) expressionContext);
-
                 constructor.addVariable(variable.getName(), variable.getType());
-
-
             } else if (expressionContext instanceof AngularParser.AssignAttributeContext) {
-                // Handle AssignAttribute
 
                 if (((AngularParser.AssignAttributeContext) expressionContext).literal() != null) {
                     Attribute attribute = (Attribute) visitAssignAttribute((AngularParser.AssignAttributeContext) expressionContext);
@@ -292,9 +287,6 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     @Override
     public Object visitType(AngularParser.TypeContext ctx) {
 
-        if (ctx.ANY() != null) {
-            return new Any();
-        }
         if (ctx.BOOLEAN() != null) {
             return new Bool();
         }
@@ -303,6 +295,9 @@ public class AngularVisitor extends AngularParserBaseVisitor {
         }
         if (ctx.STRINGDL() != null) {
             return new Text();
+        }
+        if (ctx.ANY() != null) {
+            return new Any();
         }
         return null;
     }
@@ -356,28 +351,74 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
     @Override
     public Object visitMethod(AngularParser.MethodContext ctx) {
-        return super.visitMethod(ctx);
+
+        String name = ctx.ID().toString();
+
+        Method method = new Method(name);
+        program.typeScript.methods.add(method);
+
+        ArrayList<Variable> params = (ArrayList<Variable>) visitMethodParams(ctx.methodParams());
+
+        for (var param : params) {
+            method.addVariable(param.getName(), param.getType());
+        }
+
+
+        currentScope = method.getVariables();
+
+        for (var expressionContext : ctx.expression()) {
+
+            if (expressionContext instanceof AngularParser.DeclareVariableContext) {
+                Variable variable = (Variable) visitDeclareVariable((AngularParser.DeclareVariableContext) expressionContext);
+                method.addVariable(variable.getName(), variable.getType());
+            } else if (expressionContext instanceof AngularParser.DeclareAndAssignContext) {
+                Variable variable = (Variable) visitDeclareAndAssign((AngularParser.DeclareAndAssignContext) expressionContext);
+                method.addVariable(variable.getName(), variable.getType());
+//                System.out.println(variable);
+            } else if (expressionContext instanceof AngularParser.AssignVariableContext) {
+                Variable variable = (Variable) visitAssignVariable((AngularParser.AssignVariableContext) expressionContext);
+                method.addVariable(variable.getName(), variable.getType());
+            } else if (expressionContext instanceof AngularParser.AssignAttributeContext) {
+
+                if (((AngularParser.AssignAttributeContext) expressionContext).literal() != null) {
+                    System.out.println(program.typeScript.methods.get(0));
+                    Attribute attribute = (Attribute) visitAssignAttribute((AngularParser.AssignAttributeContext) expressionContext);
+                    program.typeScript.addAttribute(attribute.getName(), attribute.getType());
+                } else if (((AngularParser.AssignAttributeContext) expressionContext).array() != null) {
+                    Array attribute = (Array) visitAssignAttribute((AngularParser.AssignAttributeContext) expressionContext);
+                    program.typeScript.addAttribute(((AngularParser.AssignAttributeContext) expressionContext).ID().getText(), attribute);
+                }
+
+
+            }
+
+
+        }
+
+
+//        for (Variable variable : variables) {
+//            method.addVariable(variable.getName(), variable.getType());
+//        }
+
+        return method;
+
     }
 
     @Override
     public Object visitMethodParams(AngularParser.MethodParamsContext ctx) {
-        return super.visitMethodParams(ctx);
-    }
 
-    @Override
-    public Object visitParam(AngularParser.ParamContext ctx) {
-        return super.visitParam(ctx);
-    }
+        int c = ctx.ID().size();
 
-    @Override
-    public Object visitBody(AngularParser.BodyContext ctx) {
-        LinkedList<ID> expressions = new LinkedList<>();
-        for (AngularParser.ExpressionContext expression : ctx.expression()) {
-//            expressions.add(v)
-
+        ArrayList<Variable> variables = new ArrayList<>();
+        for (int i = 0; i < c; i++) {
+            String name = ctx.ID(i).toString();
+            Type type = (Type) visitType(ctx.type(i));
+            variables.add(new Variable(name, type));
         }
-        return super.visitBody(ctx);
+        return variables;
+
     }
+
 
     @Override
     public Object visitAssignVariable(AngularParser.AssignVariableContext ctx) {
@@ -388,7 +429,7 @@ public class AngularVisitor extends AngularParserBaseVisitor {
     public Object visitAssignAttribute(AngularParser.AssignAttributeContext ctx) {
 
         if (ctx.array() != null) {
-            Array array= (Array) visitArray(ctx.array());
+            Array array = (Array) visitArray(ctx.array());
 //            System.out.println(array.toString());
             return array;
         } else {

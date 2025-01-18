@@ -10,11 +10,11 @@ public class TypeScript {
   public   LinkedList<Method> methods = new LinkedList<>();
   public   Constructor constructor;
 
-    public TypeScript(Map<String, Listable> attributes, LinkedList<Method> methods, Constructor constructor) {
-        this.attributes = attributes;
-        this.methods = methods;
-        this.constructor = constructor;
-    }
+//    public TypeScript(Map<String, Listable> attributes, LinkedList<Method> methods, Constructor constructor) {
+//        this.attributes = attributes;
+//        this.methods = methods;
+//        this.constructor = constructor;
+//    }
 
     public TypeScript() {
         constructor = new Constructor();
