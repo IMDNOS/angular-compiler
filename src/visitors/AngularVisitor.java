@@ -130,15 +130,14 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
     @Override
     public Html visitImg(AngularParser.ImgContext ctx) {
-        String property = ctx.ANGULAR_ATTRIBUTE_PROPERTY() != null ? ctx.ANGULAR_ATTRIBUTE_PROPERTY().getText() : "";
-        return new ImgNode(property);
+        return new ImgNode(ctx.ANGULAR_ATTRIBUTE_PROPERTY().getText());
     }
 
     @Override
     public Html visitBr(AngularParser.BrContext ctx) {
-        String binding = ctx.ANGULAR_BINDING() != null ? ctx.ANGULAR_BINDING().getText() : "";
-        return new BrNode(binding);
+        return new BrNode(ctx.ANGULAR_BINDING().getText());
     }
+
 
     @Override
     public Html visitParagragh(AngularParser.ParagraghContext ctx) {
