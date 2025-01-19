@@ -64,6 +64,7 @@ export class AppComponent {
 
   products:any;
   selectedProduct:any;
+  miss:string;
 
 
   constructor() {
@@ -73,6 +74,8 @@ export class AppComponent {
      let imad:string = "Imad";
      let  g:string = "Sss";
      let abd:number = 5;
+
+     this.miss = "please give us A";
 
 
         this.selectedProduct = "hi";

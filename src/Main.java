@@ -19,7 +19,7 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        String source = "tests/test4.txt";
+        String source = "tests/test1.txt";
         CharStream cs = fromFileName(source);
         AngularLexer lexer = new AngularLexer(cs);
         CommonTokenStream token = new CommonTokenStream(lexer);
@@ -90,9 +90,9 @@ class Symbol{
 
     @Override
     public String toString() {
-        return "\nname='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", scope='" + scope + '\'' +
+        return "\nname='" + name + '\'' +"                                     "+
+                ", type='" + type + '\'' +"                                     "+
+                ", scope='" + scope + '\'' +"                                     "+
                 "\n";
     }
 }

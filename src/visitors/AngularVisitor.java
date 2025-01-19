@@ -83,22 +83,22 @@ public class AngularVisitor extends AngularParserBaseVisitor {
 
         String directive = null;
         if (ctx.ng() != null && !ctx.ng().isEmpty()) {
-            directive = ctx.ng().get(0).getText();
-
-            for (var ngContext : ctx.ng()) {
-                directive = ngContext.getText();
-                break;
-            }
+//            directive = ctx.ng().get(0).getText();
+            directive = ctx.ng(0).getText();
+//            for (var ngContext : ctx.ng()) {
+//                directive = ngContext.getText();
+//                break;
+//            }
         }
 
         String event = null;
         if (ctx.event() != null && !ctx.event().isEmpty()) {
-            event = ctx.event().get(0).getText();
+            event = ctx.event(0).getText();
 
-            for (var eventContext : ctx.event()) {
-                event = eventContext.getText();
-                break;
-            }
+//            for (var eventContext : ctx.event()) {
+//                event = eventContext.getText();
+//                break;
+//            }
         }
 
         if (ctx.img() != null) {
